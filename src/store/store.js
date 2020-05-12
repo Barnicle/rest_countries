@@ -1,14 +1,15 @@
 import {compose, createStore, applyMiddleware} from "redux";
-
-import rootReducer from "./reducer";
+import {createBrowserHistory} from "history";
+import {routerMiddleware} from "connected-react-router";
+import createRootReducer from "./reducer";
 import thunkMiddleware from "redux-thunk";
-const defaultState = {
-    countries: ['AFG', 'RUS'],
-    message: '',
-
-}
+export const history = createBrowserHistory();
 
 
-const store = createStore(rootReducer, defaultState, compose(applyMiddleware(thunkMiddleware), window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f) );
+
+const store = createStore(
+  createRootReducer(history), //root reducer with router state
+  compose(applyMiddleware(routerMiddleware(history), thunkMiddleware),  window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f)
+  );
 
 export default store;

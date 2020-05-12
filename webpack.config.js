@@ -22,6 +22,7 @@ module.exports = {
       template: './index.html',
       inject: false,
       appMountId: 'root',
+      favicon: './public/favicon.ico',
       filename: 'index.html',
     }),
   ],
@@ -33,7 +34,7 @@ module.exports = {
         loader: 'babel-loader',
       },
       {
-        test: /\.(png|jpg|svg)$/,
+        test: /\.(png|jpg|svg|ico)$/,
         exclude: /node_modules/,
         use: [
           {
