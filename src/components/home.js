@@ -4,7 +4,8 @@ import {connect} from 'react-redux';
 import {getCountriesFromState} from "../store/reducer";
 import List_element from "./list_element";
 import Filters from "./filters";
-import {fetchCountries} from "../store/middleware/fetchCountries";
+
+import {fetchAllCountries} from "../store/middleware/fetchAllCountries";
 
 
 const mapsStateToProps = (state)=>{
@@ -15,7 +16,7 @@ const mapsStateToProps = (state)=>{
 
  class Home extends React.Component{
     componentDidMount() {
-        this.props.state?undefined:this.props.dispatch(fetchCountries('europe'))
+        this.props.dispatch(fetchAllCountries());
     }
     
      render() {

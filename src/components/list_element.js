@@ -18,50 +18,50 @@ class List_element extends React.Component{
 			<Image src={country.flag} alt={country.name}></Image>
 			<StyledCountryName>{country.name}</StyledCountryName>
 			<StyledCountryInfo>
-				<div><span>Population:</span> {population}</div>
-				<div><span>Region:</span> {country.region}</div>
-				<div><span>Capital:</span> {country.capital}</div>
-			</StyledCountryInfo>
+				<li>{`Population: ${population}`}</li>
+				<li>{`Region: ${country.region}`}</li>
+				<li>{`Capital: ${country.capital}`}</li>
+		</StyledCountryInfo>
 		</StyledLink>
 		</Wrapper>
-		
 	}
 }
 export default List_element;
 
 const Image = styled.img`
 width:100%;
-border-bottom: 2px solid ${props => props.theme.bg};
 height: 200px;
 object-fit: cover;
+border-bottom: 2px solid ${props => props.theme.bg};
 `
 
 const StyledLink = styled(Link)`
 text-decoration: none;
 `
 const StyledCountryName = styled.h2`
-font-size: 2.2rem;
+font-size: 1.5rem;
 color:${props => props.theme.text};
-margin:3rem;
+margin:2rem;
 `
-const StyledCountryInfo = styled.div`
-margin:2rem 2rem 5rem 3rem;
+const StyledCountryInfo = styled.ul`
+margin:2rem 2rem 5rem 2rem;
 display:flex;
 flex-direction: column;
 color:${props => props.theme.text};
-div, span{
-font-size:1.6rem;
-}
-span{
+list-style-type: none;
 font-weight: 600;
+li{
+font-size:1.1rem;
+margin-bottom:0.5rem;
 }
 `
 
 const Wrapper = styled.div`
+margin: 50px;
 width: auto;
 min-width:280px;
 max-width:350px;
-margin: 50px;
+height: 420px;
 background: ${props => props.theme.el_bg};
 box-shadow: 0 0 10px ${props => props.theme.shadow};
 border-radius: 8px;

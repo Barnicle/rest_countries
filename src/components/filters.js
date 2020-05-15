@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import {device} from "../styles/device";
 import {IoMdSearch} from 'react-icons/io';
-import {fetchCountries} from "../store/middleware/fetchCountries";
+import {fetchCountriesByRegion} from "../store/middleware/fetchCountriesByRegion";
 import {connect} from "react-redux";
 const mapDispatchToProps = (dispatch)=> {
-	return {fetchCountries:(region)=> dispatch(fetchCountries(region))}
+	return {fetchCountriesByRegion:(region)=> dispatch(fetchCountriesByRegion(region))}
 }
 
 
@@ -14,9 +14,9 @@ const mapDispatchToProps = (dispatch)=> {
 		e.preventDefault();
 		// e.target.placeholder='';
 	}
-	handleSelect =(e)=>{
-		const {value} = e.target;
-		this.props.fetchCountries(value);
+	handleSelectRegion =(e)=>{
+		const region = e.target.value;
+		this.props.fetchCountriesByRegion(region);
 	}
 	 render() {
 		return <FilterWrapper>
@@ -24,8 +24,8 @@ const mapDispatchToProps = (dispatch)=> {
 				<Input placeholder={`Search for a country...`} onFocus={this.handleSearch}/>
 				<IoSearch size={20}/>
 			</InputWrapper>
-			<Select defaultValue={'europe'} onChange={this.handleSelect}>
-				
+			<Select defaultValue={"placeholder"} onChange={this.handleSelectRegion}>
+				<option disabled={true}  hidden value="placeholder">Filter by: Region</option>
 				<option value={'africa'}>Africa</option>
 				<option value={'americas'}>America</option>
 				<option value={'asia'}>Asia</option>
@@ -58,10 +58,10 @@ const Input = styled.input`
 width:100%;
 background:${props => props.theme.el_bg};
 box-shadow: 0 0 5px ${props => props.theme.bg};
-padding: 20px 20px 20px 40px;
+padding: 1.1rem 1.1rem 1.1rem 3rem;
 border: 1px solid transparent;
 border-radius: 5px;
-font-size: 2rem;
+font-size: 1.2rem;
 margin: 1rem;
 ::placeholder{
 color: ${props => props.theme.input?props.theme.input: props.theme.text};

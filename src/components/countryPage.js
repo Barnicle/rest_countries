@@ -1,119 +1,158 @@
-import React from 'react';
+import React from "react";
 import styled from "styled-components";
-import {BsArrowLeft} from 'react-icons/bs';
-import {getCountriesFromState} from "../store/reducer";
-import {connect} from  'react-redux';
-const mapsStateToProps = (state)=>{
+import { BsArrowLeft } from "react-icons/bs";
+import { getCountriesFromState } from "../store/reducer";
+import { connect } from "react-redux";
+const mapsStateToProps = (state) => {
 	return {
-		state: getCountriesFromState(state)
-	}
-}
+		state: getCountriesFromState(state),
+	};
+};
 
-//Full screen country's info
-class CountryPage extends React.Component{
+class CountryPage extends React.Component {
+	formatPopulation = (population) => {
+		return  population.toString().match(/(\d+?)(?=(\d{3})+(?!\d)|$)/g).join(',');
+	}
 	render() {
 		const state = this.props.state;
-		  const country = state.countries.filter(el => el   .numericCode === this.props.match.params.id)[0]
-	
-		  
-		  return <CountryWrapper>
-			<StyledBackBtn onClick={()=>this.props.history.goBack()}><StyledArrow size={20}/>Back</StyledBackBtn>
-			<CountryInfoWrapper>
-			<StyledFlag src={country.flag} alt={country.name}/>
-			<SectionWrapper>
-				
-				<h2>{country.name}</h2>
-				<SectionInfoWrapper>
-				<section>
-				<div>Native name: <span>{country.nativeName}</span></div>
-				<div>Population: <span>{country.population}</span></div>
-				<div>Region: <span>{country.region}</span></div>
-				<div>Sub Region: <span>{country.subregion}</span></div>
-				<div>Capital: <span>{country.capital}</span></div>
-				</section>
-				<section>
-				<div>Top Level Domain: <span>{country.topLevelDomain}</span></div>
-				<div>Currencies: {country.currencies.map((el, index) => <span key={index}>{el.name}</span>)}</div>
-				<div>Languages:  {country.languages.map((el, index) => <span key={index}>{el.name}</span>)}</div>
-				</section>
-				</SectionInfoWrapper>
-				<div>
-					<span>Border Countries</span>
-					{country.borders?country.borders.map((el,index)=><CountryBtn key={index}>{el}</CountryBtn>):'None'}
-				</div>
-			</SectionWrapper>
-			
-			</CountryInfoWrapper>
-		</CountryWrapper>
+		const [country] = state.countries.filter(
+		  (el) => el.numericCode === this.props.match.params.id
+		);
+		const {flag, name, nativeName, population, region, subregion, capital, topLevelDomain, currencies, languages} = country;
+		return (
+		  <CountryWrapper>
+			  <SectionImg>
+				  <StyledButton
+				    margin={'3.5rem'}
+					onClick={() => this.props.history.goBack()}
+				  >
+					  <StyledArrow size={20} />
+					  Back
+				  </StyledButton>
+				  <StyledFlag src={flag} alt={name} />
+			  </SectionImg>
+			  <SectionWrapper>
+				  <h2>{name}</h2>
+				  <SectionInfoWrapper>
+					  <InfoList>
+						  <li>Native name: {nativeName}</li>
+						  <li>Population: {this.formatPopulation(population)}</li>
+						  <li>Region: {region}</li>
+						  <li>Sub Region: {subregion}</li>
+						  <li>Capital: {capital}</li>
+					  </InfoList>
+					  <InfoList>
+						  <li>Top Level Domain: ${topLevelDomain}</li>
+						  <li>Currencies:
+							  {currencies.map((el, index) => (
+								<span key={index}>{el.name}</span>
+							  ))}
+						  </li>
+					  <li>Languages:
+						  {languages.map((country, index) => (
+						    <span key={index}>{country.name}</span>
+						  ))}
+					  </li>
+					  </InfoList>
+				  </SectionInfoWrapper>
+				  <BorderCountriesWrapper>
+					  <span>Border Countries</span>
+					  {country.borders
+					    ? country.borders.map((country, index) => (
+						  <StyledButton margin={'0.5rem'} key={index}>{country}</StyledButton>
+					    ))
+					    : "None"}
+				  </BorderCountriesWrapper>
+			  </SectionWrapper>
+
+		  </CountryWrapper>
+		);
 	}
 }
 
 export default connect(mapsStateToProps)(CountryPage);
-
-const StyledFlag = styled.img`
-width:30vw;
-`
-const StyledArrow = styled(BsArrowLeft)`
-color:${props => props.theme.text};
-`
-
-const StyledBackBtn = styled.button`
-width: 110px;
-padding:5px;
-margin-bottom:4rem;
-display:flex;
-justify-content: space-evenly;
-align-items: center;
-flex-wrap: nowrap;
-background: ${props=>props.theme.el_bg};
-color:${props => props.theme.text};
-
-border: 1px solid transparent;
-border-radius: 4px;
-`
 const CountryWrapper = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-height: 100%;
-background: ${props=>props.theme.bg};
-color:${props => props.theme.text};
-
-padding:5rem;
+  grid-aria: "header";
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-direction: row;
+	flex: 2;
+  background: ${(props) => props.theme.bg};
+  color: ${(props) => props.theme.text};
+  padding: 2rem;
+  over-flow: hidden;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+const SectionImg = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `
+const StyledFlag = styled.img`
+  width: 100%;
+  max-width:500px;
+  min-width:250px;
+  padding: 10px;
 
-const CountryInfoWrapper = styled.div`
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-width: 70%;
-`
+`;
+const StyledArrow = styled(BsArrowLeft)`
+  color: ${(props) => props.theme.text};
+`;
+
+const StyledButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  padding: 5px;
+  margin: ${props => props.margin || '0'};
+  width: ${(props) => props.width || "10rem"};
+  background: ${(props) => props.theme.el_bg};
+  color: ${(props) => props.theme.text};
+  border: 1px solid transparent;
+  border-radius: 4px;
+`;
+
 const SectionWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: ${(props) => props.theme.text};
+  h2 {
+    font-size:3rem;
+    margin: 10px;
+  }
+    ::last-child{
+  margin-bottom: 2rem;
+  }
+`;
+const BorderCountriesWrapper = styled.div`
 display: flex;
-flex-direction: column;
-justify-content: space-around;
-color:${props => props.theme.text};
+flex-flow: row wrap;
+// justify-content: space-around;
+align-items: center;
+width: auto;
 
->div, h2{
-margin: 10px;
-}
-div > section > div{
-margin-bottom:10px;
-}
 `
+const SectionInfoWrapper = styled.section`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  li{
+    font-size:1.5rem;
 
-const SectionInfoWrapper = styled.div`
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-`
+  }
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 
-const CountryBtn = styled.button`
-background: ${props=>props.theme.el_bg};
-color:${props => props.theme.text};
-padding:2px;
-margin:2px;
-width: 70px;
-border: 1px solid transparent;
-border-radius: 4px;
-`
+`;
+const InfoList = styled.ul`
+  list-style-type:none;
+margin-bottom: 50px;
+  //   margin-bottom: 10px;
+`;

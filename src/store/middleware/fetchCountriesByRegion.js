@@ -1,9 +1,6 @@
-import mapDispatchToProps from "react-redux/lib/connect/mapDispatchToProps";
 import {getCountries} from "../actions";
 
-export const fetchCountries= (region) => {
-    console.log(region);
-    
+export const fetchCountriesByRegion= (region) => {
     return dispatch => {
         fetch(`https://restcountries.eu/rest/v2/region/${region}`)
         .then(res => res.json())
@@ -15,3 +12,4 @@ export const fetchCountries= (region) => {
     );
     }
 }
+

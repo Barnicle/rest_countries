@@ -4,10 +4,12 @@ const hadleLocalStorage = ()=>{
     if(localStorage.getItem('state')) return JSON.parse(localStorage.getItem('state'));
     else return [];
 }
-function reducer(state ={countries: hadleLocalStorage()}, action) {
+function reducer(state , action) {
     switch (action.type) {
         case "GET_COUNTRIES":
-            return {countries:action.countries}
+            return {...state, countries:action.countries};
+        case "SEARCH_COUNTRY":
+            return {...state, search: action.search};
         default: return state;
     }
 }
