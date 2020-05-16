@@ -1,83 +1,91 @@
 import React from "react";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 import { BsArrowLeft } from "react-icons/bs";
 import { getCountriesFromState } from "../store/reducer";
 import { connect } from "react-redux";
 const mapsStateToProps = (state) => {
-	return {
-		state: getCountriesFromState(state),
-	};
+  return {
+    state: getCountriesFromState(state),
+  };
 };
 
 class CountryPage extends React.Component {
-	formatPopulation = (population) => {
-		return  population.toString().match(/(\d+?)(?=(\d{3})+(?!\d)|$)/g).join(',');
-	}
-	render() {
-		const state = this.props.state;
-		const [country] = state.countries.filter(
-		  (el) => el.numericCode === this.props.match.params.id
-		);
-		const {flag, name, nativeName, population, region, subregion, capital, topLevelDomain, currencies, languages} = country;
-		return (
-		  <CountryWrapper>
-			  <SectionImg>
-				  <StyledButton
-				    margin={'3.5rem'}
-					onClick={() => this.props.history.goBack()}
-				  >
-					  <StyledArrow size={20} />
-					  Back
-				  </StyledButton>
-				  <StyledFlag src={flag} alt={name} />
-			  </SectionImg>
-			  <SectionWrapper>
-				  <h2>{name}</h2>
-				  <SectionInfoWrapper>
-					  <InfoList>
-						  <li>Native name: {nativeName}</li>
-						  <li>Population: {this.formatPopulation(population)}</li>
-						  <li>Region: {region}</li>
-						  <li>Sub Region: {subregion}</li>
-						  <li>Capital: {capital}</li>
-					  </InfoList>
-					  <InfoList>
-						  <li>Top Level Domain: ${topLevelDomain}</li>
-						  <li>Currencies:
-							  {currencies.map((el, index) => (
-								<span key={index}>{el.name}</span>
-							  ))}
-						  </li>
-					  <li>Languages:
-						  {languages.map((country, index) => (
-						    <span key={index}>{country.name}</span>
-						  ))}
-					  </li>
-					  </InfoList>
-				  </SectionInfoWrapper>
-				  <BorderCountriesWrapper>
-					  <span>Border Countries</span>
-					  {country.borders
-					    ? country.borders.map((country, index) => (
-						  <StyledButton margin={'0.5rem'} key={index}>{country}</StyledButton>
-					    ))
-					    : "None"}
-				  </BorderCountriesWrapper>
-			  </SectionWrapper>
+  formatPopulation = (population) => {
+    return population
+      .toString()
+      .match(/(\d+?)(?=(\d{3})+(?!\d)|$)/g)
+      .join(",");
+  };
+  render() {
+    const state = this.props.state;
+    const [country] = state.countries.filter(
+      (el) => el.numericCode === this.props.match.params.id
+    );
+    console.log(this.props);
+    return (
+      <CountryWrapper>
+        <SectionImg>
+          <StyledButton
+            margin={"3.5rem"}
+            onClick={() => this.props.history.goBack()}
+          >
+            <StyledArrow size={20} />
+            Back
+          </StyledButton>
+          <StyledFlag src={country.flag} alt={country.name} />
+        </SectionImg>
 
-		  </CountryWrapper>
-		);
-	}
+        <SectionWrapper>
+          <h2>{country.name}</h2>
+          <SectionInfoWrapper>
+            <InfoList>
+              <li>Native name: {country.nativeName}</li>
+              <li>Population: {this.formatPopulation(country.population)}</li>
+              <li>Region: {country.region}</li>
+              <li>Sub Region: {country.subregion}</li>
+              <li>Capital: {country.capital}</li>
+            </InfoList>
+            <InfoList>
+              <li>Top Level Domain: ${country.topLevelDomain}</li>
+              <li>
+                Currencies:
+                {country.currencies.map((el, index) => (
+                  <span key={index}>{el.name}</span>
+                ))}
+              </li>
+              <li>
+                Languages:
+                {country.languages.map((country, index) => (
+                  <span key={index}>{country.name}</span>
+                ))}
+              </li>
+            </InfoList>
+          </SectionInfoWrapper>
+          <BorderCountriesWrapper>
+            <span>Border Countries</span>
+            {country.borders
+              ? country.borders.map((country, index) => (
+                  <StyledButton margin={"0.5rem"} key={index}>
+                    {country}
+                  </StyledButton>
+                ))
+              : "None"}
+          </BorderCountriesWrapper>
+        </SectionWrapper>
+      </CountryWrapper>
+    );
+  }
 }
 
-export default connect(mapsStateToProps)(CountryPage);
+export default withRouter(connect(mapsStateToProps)(CountryPage));
 const CountryWrapper = styled.div`
   grid-aria: "header";
   display: flex;
   flex-direction: column;
   justify-content: center;
   flex-direction: row;
-	flex: 2;
+  flex: 2;
   background: ${(props) => props.theme.bg};
   color: ${(props) => props.theme.text};
   padding: 2rem;
@@ -90,13 +98,12 @@ const SectionImg = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: center;
-`
+`;
 const StyledFlag = styled.img`
   width: 100%;
-  max-width:500px;
-  min-width:250px;
+  max-width: 500px;
+  min-width: 250px;
   padding: 10px;
-
 `;
 const StyledArrow = styled(BsArrowLeft)`
   color: ${(props) => props.theme.text};
@@ -108,7 +115,7 @@ const StyledButton = styled.button`
   align-items: center;
   flex-wrap: nowrap;
   padding: 5px;
-  margin: ${props => props.margin || '0'};
+  margin: ${(props) => props.margin || "0"};
   width: ${(props) => props.width || "10rem"};
   background: ${(props) => props.theme.el_bg};
   color: ${(props) => props.theme.text};
@@ -122,37 +129,34 @@ const SectionWrapper = styled.div`
   justify-content: center;
   color: ${(props) => props.theme.text};
   h2 {
-    font-size:3rem;
+    font-size: 3rem;
     margin: 10px;
   }
-    ::last-child{
-  margin-bottom: 2rem;
+  ::last-child {
+    margin-bottom: 2rem;
   }
 `;
 const BorderCountriesWrapper = styled.div`
-display: flex;
-flex-flow: row wrap;
-// justify-content: space-around;
-align-items: center;
-width: auto;
-
-`
+  display: flex;
+  flex-flow: row wrap;
+  // justify-content: space-around;
+  align-items: center;
+  width: auto;
+`;
 const SectionInfoWrapper = styled.section`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  li{
-    font-size:1.5rem;
-
+  li {
+    font-size: 1.5rem;
   }
   @media (max-width: 768px) {
     flex-direction: column;
   }
-
 `;
 const InfoList = styled.ul`
-  list-style-type:none;
-margin-bottom: 50px;
+  list-style-type: none;
+  margin-bottom: 50px;
   //   margin-bottom: 10px;
 `;
