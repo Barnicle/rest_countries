@@ -3,5 +3,5 @@
 ## The challenge
 
 Challenge is to integrate with the [REST Countries API](https://restcountries.eu) to pull country data and display it like in the designs.</br>
-<strong>To Start:</strong> npm start
+<strong>To Start:</strong> npm start</br>
 ![](Countries.gif)
