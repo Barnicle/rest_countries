@@ -12,7 +12,7 @@ class List_element extends React.Component {
 
     return (
       <Wrapper>
-        <StyledLink to={`/country/${country.numericCode}`}>
+        <StyledLink to={`/country/${country.alpha3Code}`}>
           <Image src={country.flag} alt={country.name}></Image>
           <StyledCountryName>{country.name}</StyledCountryName>
           <StyledCountryInfo>
@@ -34,7 +34,7 @@ const Image = styled.img`
   border-bottom: 2px solid ${(props) => props.theme.bg};
 `;
 
-const StyledLink = styled(Link)`
+export const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 const StyledCountryName = styled.h2`
@@ -57,9 +57,9 @@ const StyledCountryInfo = styled.ul`
 
 const Wrapper = styled.div`
   margin: 50px;
-  width: auto;
-  min-width: 280px;
-  max-width: 350px;
+  width: 300px;
+  // min-width: 280px;
+  // max-width: 350px;
   height: 420px;
   background: ${(props) => props.theme.el_bg};
   box-shadow: 0 0 10px ${(props) => props.theme.shadow};

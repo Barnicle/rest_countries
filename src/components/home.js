@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { getCountriesFromState } from "../store/reducer";
 import List_element from "./list_element";
 import Filters from "./filters";
-import { fetchCountriesByRegion } from "../store/middleware/fetchCountriesByRegion";
 
 const mapsStateToProps = (state) => {
   return {
@@ -13,17 +13,16 @@ const mapsStateToProps = (state) => {
 };
 
 class Home extends React.Component {
-  componentDidMount = () => {
-    if (this.props.state.countries.length == 0)
-      this.props.dispatch(fetchCountriesByRegion());
-  };
+
   render() {
     console.log(this.props);
-    const { countries } = this.props.state;
+    // const { countries } = this.props.state;
+    const countries = this.props.state.searchedCountries.length !== 0? this.props.state.searchedCountries : this.props.state.countries;
     return (
       <StyledHome>
-        <Filters />
+          {countries && <Filters />}
         <CountryWrapper>
+          
           {countries &&
             countries.map((el, index) => (
               <List_element country={el} id={index} key={index}>
@@ -36,7 +35,7 @@ class Home extends React.Component {
   }
 }
 
-export default connect(mapsStateToProps)(Home);
+export default withRouter(connect(mapsStateToProps)(Home));
 
 const StyledHome = styled.div`
   position: relative;
@@ -54,11 +53,8 @@ const CountryWrapper = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
-  flex-direction: row;
-  flex-wrap: wrap;
   align-items: center;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   background: ${(props) => props.theme.bg};
   width: 100%;
-  padding: 20px;
 `;

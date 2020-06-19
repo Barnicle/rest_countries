@@ -5,9 +5,9 @@ export const getCountries = (countries)=>{
         countries
     }
 }
-export const searchCountry = (search)=>{
+export const getSearchedCountries= (countries)=>{
     return {
-        type: 'SEARCH_COUNTRY',
-        search
+        type: 'GET_SEARCHED_COUNTRIES',
+        countries
     }
 }

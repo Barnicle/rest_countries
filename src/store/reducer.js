@@ -1,35 +1,26 @@
-import { combineReducers } from "redux";
-import { connectRouter } from "connected-react-router";
+
 
 const defaultState = {
   countries: [],
-  isPending: false,
-  error: false,
-  search: "",
+  searchedCountries: [],
 };
 
-const hadleLocalStorage = () => {
-  if (localStorage.getItem("state"))
-    return JSON.parse(localStorage.getItem("state"));
-  else return [];
-};
+
 function reducer(state = defaultState, action) {
   switch (action.type) {
     case "GET_COUNTRIES":
       return { ...state, countries: action.countries };
-    case "SEARCH_COUNTRY":
-      return { ...state, search: action.search };
+    case "GET_SEARCHED_COUNTRIES":
+      return { ...state, searchedCountries: action.countries };
     default:
       return state;
   }
 }
 
-const createRootReducer = (history) =>
-  combineReducers({
-    router: connectRouter(history),
-    state: reducer,
-  });
+
+export default reducer;
 
 //SELECTORS
-export const getCountriesFromState = (state) => state.state;
-export default createRootReducer;
+export const getCountriesFromState = (state) => state;
+export const getSearchedCountriesFromState = (state) => state.searchedCountries;
+

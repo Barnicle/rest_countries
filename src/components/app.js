@@ -8,9 +8,8 @@ const light__theme = {
   text: "hsl(200, 15%, 8%)", //Very Dark Blue
   input: "hsl(0, 0%, 52%)", //Dark Gray
   el_bg:'hsl(0, 0%, 100%)', //White
-  shadow: 'hsl(200, 10%, 10%)'
+  shadow: 'hsl(200, 0%, 60%)'
 };
-
 
 const dark__theme = {
   bg: "hsl(207, 26%, 17%)", //Very Dark Blue

@@ -1,25 +1,28 @@
 import React from "react";
+import {Link} from "react-router-dom"
 import styled from "styled-components";
 import { BsMoon } from "react-icons/bs";
 import { device } from "../styles/device";
 import { connect } from "react-redux";
-import { fetchCountriesByRegion } from "../store/middleware/fetchCountriesByRegion";
+import { fetchCountries } from "../store/middleware/fetchCountries";
 import { searchCountry } from "../store/middleware/searchCountry";
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchCountriesByRegion: (region) =>
-      dispatch(fetchCountriesByRegion(region)),
+      dispatch(fetchCountries(region)),
     searchCountry: (value) => dispatch(searchCountry(value)),
   };
 };
 class Header extends React.Component {
   componentDidMount = () => {
+    console.log('header');
     this.props.fetchCountriesByRegion();
   };
   render() {
     return (
       <StyledHeader>
-        <Header__title>Where in the world?</Header__title>
+        <StyledLink to={'/'}><Header__title>Where in the world?</Header__title></StyledLink>
+        
         <Header__button onClick={this.props.toggleTheme}>
           <StyledMoonLogo size={17} />
           Dark Mode
@@ -30,10 +33,14 @@ class Header extends React.Component {
 }
 
 export default connect(null, mapDispatchToProps)(Header);
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`;
+
 const StyledHeader = styled.div`
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -42,6 +49,7 @@ const StyledHeader = styled.div`
   border-bottom: 2px solid ${(props) => props.theme.bg};
   padding: 2rem;
   @media ${device.mobileM} {
+  font-size: 2rem;
     justify-content: space-between;
     padding: 2rem 1rem 2rem 1rem;
     flex: 1 100px;
@@ -58,6 +66,8 @@ const Header__title = styled.h1`
   margin-left: 2rem;
   color: ${(props) => props.theme.text};
   @media ${device.mobileM} {
+    font-size: 1.2rem;
+
     margin-left: 0;
   }
 `;
