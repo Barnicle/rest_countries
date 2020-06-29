@@ -5,9 +5,10 @@ const Item = (props) => {
   return (
     <Link
       href={{
-        pathname: "/item",
+        pathname: "/country",
         query: { id: props.country.alpha3Code },
       }}
+      passHref
     >
       <Wrapper>
         <Image src={props.country.flag} alt={props.country.name}></Image>

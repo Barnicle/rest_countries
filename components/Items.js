@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Filters from "./Filters";
 import Item from "./Item";
 class Items extends Component {
   state = {
@@ -18,11 +19,11 @@ class Items extends Component {
   };
   render() {
     const { countries } = this.state;
-    console.log(countries);
+    // console.log(countries);
     return (
       <div>
-        {/* {countries && <Filters />}
-        <CountryWrapper> */}
+        {countries && <Filters />}
+        {/* <CountryWrapper> */}
         {countries &&
           countries.map((el, index) => <Item key={index} country={el} />)}
         {/* </CountryWrapper> */}
@@ -30,4 +31,5 @@ class Items extends Component {
     );
   }
 }
+
 export default Items;

@@ -1,136 +1,45 @@
 import React from "react";
 import styled from "styled-components";
-import { withRouter } from "react-router-dom";
+import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
-import { getCountriesFromState } from "../store/reducer";
-import { connect } from "react-redux";
-import { fetchCountriesByCode } from "../store/middleware/fetchCountries";
-import { searchCountry } from "../store/middleware/searchCountry";
-import { StyledButton, StyledLink } from "../styles/styledComponents";
-
-const mapsStateToProps = (state) => {
-  return {
-    state: getCountriesFromState(state),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchCountriesByCode: (code) => dispatch(fetchCountriesByCode(code)),
-    searchCountry: (value) => dispatch(searchCountry(value)),
-  };
-};
+// import { StyledButton, StyledLink } from "../styles/styledComponents";
 
 class CountryPage extends React.Component {
-  formatPopulation = (population) => {
-    return population
-      .toString()
-      .match(/(\d+?)(?=(\d{3})+(?!\d)|$)/g)
-      .join(",");
-  };
+  // formatPopulation = (population) => {
+  //   return population
+  //     .toString()
+  //     .match(/(\d+?)(?=(\d{3})+(?!\d)|$)/g)
+  //     .join(",");
+  // };
 
-  getCountriesNameByCode = (code) => {
-    const [country] = this.props.state.countries.filter(
-      (el) => el.alpha3Code === code
-    );
-    return country.name;
-  };
+  // getCountriesNameByCode = (code) => {
+  //   const [country] = this.props.state.countries.filter(
+  //     (el) => el.alpha3Code === code
+  //   );
+  //   return country.name;
+  // };
 
-  componentDidMount() {
-    console.log(this.props.match.params.id);
-    if (this.props.state === undefined)
-      this.props.fetchCountriesByCode(this.props.match.params.id[0]);
-  }
+  // componentDidMount() {
+  //   console.log(this.props.match.params.id);
+  //   if (this.props.state === undefined)
+  //     this.props.fetchCountriesByCode(this.props.match.params.id[0]);
+  // }
 
   render() {
-    const state = this.props.state;
-    const [country] = state.countries.filter(
-      (el) => el.alpha3Code === this.props.match.params.id
-    );
+    console.log(this.props);
+    // const state = this.props.state;
+    // const [country] = state.countries.filter(
+    //   (el) => el.alpha3Code === this.props.match.params.id
+    // );
     return (
-      <CountryWrapper>
-        <SectionImg>
-          <StyledButton
-            margin={"4.5rem"}
-            onClick={() => this.props.history.goBack()}
-            padding={"2.5rem"}
-          >
-            <StyledArrow size={20} />
-            Back
-          </StyledButton>
-          {country && <StyledFlag src={country.flag} alt={country.name} />}
-        </SectionImg>
-
-        {country && (
-          <SectionWrapper>
-            <h2>{country.name}</h2>
-            <SectionInfoWrapper>
-              <InfoList>
-                <li>
-                  <h3>Native name:</h3>
-                  {country.nativeName}
-                </li>
-                <li>
-                  <h3>Population:</h3>
-                  {this.formatPopulation(country.population)}
-                </li>
-                <li>
-                  <h3>Region:</h3>
-                  {country.region}
-                </li>
-                <li>
-                  <h3>Sub Region:</h3>
-                  {country.subregion}
-                </li>
-                <li>
-                  <h3>Capital:</h3>
-                  {country.capital}
-                </li>
-              </InfoList>
-              <InfoList>
-                <li>
-                  <h3>Top Level Domain:</h3>
-                  {country.topLevelDomain}
-                </li>
-                <li>
-                  <h3>Currencies:</h3>
-                  {country.currencies.map((el, index) => (
-                    <span key={index}>{el.name}</span>
-                  ))}
-                </li>
-                <li>
-                  <h3>Languages: </h3>{" "}
-                  {country.languages.map((country, index) => (
-                    <span key={index}>{country.name}</span>
-                  ))}
-                </li>
-              </InfoList>
-            </SectionInfoWrapper>
-            <BorderCountriesWrapper>
-              <h3>Border Countries: </h3>
-              <div>
-                {country.borders
-                  ? country.borders.map((country, index) => (
-                      <StyledLink key={index} to={`/country/${country}`}>
-                        {" "}
-                        <StyledButton key={index}>
-                          {this.getCountriesNameByCode(country)}
-                        </StyledButton>
-                      </StyledLink>
-                    ))
-                  : "None"}
-              </div>
-            </BorderCountriesWrapper>
-          </SectionWrapper>
-        )}
-      </CountryWrapper>
+      <div>
+        <p>Country</p>
+      </div>
     );
   }
 }
 
-export default withRouter(
-  connect(mapsStateToProps, mapDispatchToProps)(CountryPage)
-);
+export default CountryPage;
 const CountryWrapper = styled.div`
   display: flex;
   justify-content: space-around;

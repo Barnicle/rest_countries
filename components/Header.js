@@ -2,6 +2,18 @@ import React from "react";
 import styled from "styled-components";
 import { BsMoon } from "react-icons/bs";
 import StyledHeader from "./styles/StyledHeader";
+import Router from "next/router";
+import NProgress from "nprogress";
+Router.onRouteChangeStart = () => {
+  console.log("start");
+  NProgress.start();
+};
+Router.onRouteChangeComplete = () => {
+  NProgress.done();
+};
+Router.onRouteChangeError = () => {
+  NProgress.error();
+};
 const Header = (props) => {
   return (
     <StyledHeader>
